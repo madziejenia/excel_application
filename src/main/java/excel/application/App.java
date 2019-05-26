@@ -11,8 +11,9 @@ import java.util.List;
 
 public class App
 {
-    private static String[] columns = {"Name of course", "DayOfWeek", "LocalTime", "NumberOfHours", "StartDate"};
+    private static String[] columns = {"Name of course", "Day of Week", "Local Time", "Number of hours", "Start Date"};
     private static List<Lessons> lessons = new ArrayList<>();
+
 
 
     static {
@@ -22,12 +23,13 @@ public class App
         lessons.add(new Lessons("Inheritance", "Monday", "18:30 - 20:30", "2", "17/06/2019"));
         lessons.add(new Lessons("Polymorphism", "Wednesday", "18:30 - 20:30", "2", "19/06/2019"));
         lessons.add(new Lessons("SQL essentials", "Friday", "18:30 - 20:30", "2", "21/06/2019"));
+
     }
 
     public static void main(String[] args) throws IOException {
 
-    Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("Lessons schedule");
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Lessons schedule");
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 16);
@@ -37,13 +39,17 @@ public class App
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setFont(headerFont);
 
-        Row headerRow = sheet.createRow(1);
+        Row headerRow = sheet.createRow(0);
 
         for (int i = 0; i < columns.length; i++){
             Cell cell = headerRow.createCell(i);
             cell.setCellStyle(headerCellStyle);
+            cell.setCellValue(columns[i]);
+
 
         }
+
+
 
         int rowNumber = 1;
 
@@ -63,11 +69,10 @@ public class App
             int rowCount = 0;
             Row rowTotal = sheet.createRow(rowCount + 7);
             Cell cellTotalText = rowTotal.createCell(0);
-            cellTotalText.setCellValue("Total:");
+            cellTotalText.setCellValue("Total hours:");
 
             Cell cellTotal = rowTotal.createCell(3);
             cellTotal.setCellFormula("SUM(D2:D7)");
-
 
 
             FileOutputStream fileOut = new FileOutputStream("lessons.xlsx");
